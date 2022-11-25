@@ -61,6 +61,7 @@ function blocking_call_api() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('started to call blocking fake api');
         console.log('Call	|Start		|Status		|Time Spent	|Kind');
+        const pre_loop = Math.floor(new Date().valueOf());
         for (let i = 1; i < 11; i++) {
             try {
                 if (Math.floor(i % 2))
@@ -72,6 +73,7 @@ function blocking_call_api() {
                 console.log(e);
             }
         }
+        console.log(`Total Time spent ${Math.floor(Math.floor(new Date().valueOf()) - pre_loop)}ms`);
         return (true);
     });
 }
@@ -79,6 +81,7 @@ function non_blocking_call_api() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log('started to call non blocking fake api');
         console.log('Call	|Start		|Status		|Time Spent	|Kind');
+        const pre_loop = Math.floor(new Date().valueOf());
         try {
             const promises_vector = [];
             for (let i = 1; i < 11; i++) {
@@ -96,6 +99,7 @@ function non_blocking_call_api() {
                 else
                     console.log(e.reason);
             });
+            console.log(`Total Time spent ${Math.floor(Math.floor(new Date().valueOf()) - pre_loop)}ms`);
         }
         catch (e) {
             console.log(e);
@@ -105,6 +109,13 @@ function non_blocking_call_api() {
         return (true);
     });
 }
-blocking_call_api().then(e => console.log(`Resultado ${e}`)).catch(e => console.log('deu ruim'));
+//blocking_call_api().then(e=>console.log(`Resultado ${e}`)).catch(e=>console.log('deu ruim'))
 //non_blocking_call_api().then(e=>console.log(`Resultado ${e}`)).catch(e=>console.log('deu ruim'))
+function call_both() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield blocking_call_api();
+        yield non_blocking_call_api();
+    });
+}
+call_both();
 //# sourceMappingURL=index.js.map

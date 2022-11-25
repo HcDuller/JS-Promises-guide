@@ -41,42 +41,46 @@ async function fake_async_api_wrapper(call_number:number){
 		return(e);
 	}
 }
+
 async function blocking_call_api(){
 	console.log('started to call blocking fake api')
 	console.log('Call	|Start		|Status		|Time Spent	|Kind');
+	const pre_loop = Math.floor(new Date().valueOf());
 	for(let i = 1; i < 11; i++){
 		try{
 			if (Math.floor(i % 2))
-				console.log(await fake_async_api(i))
+			console.log(await fake_async_api(i))
 			else
-				console.log(await fake_api(i))
+			console.log(await fake_api(i))
 		}catch(e){
 			console.log(e);
 		}
 	}
+	console.log(`Total Time spent ${Math.floor(Math.floor(new Date().valueOf()) - pre_loop)}ms`)
 	return (true);
 }
-
 async function non_blocking_call_api(){
 	console.log('started to call non blocking fake api')
 	console.log('Call	|Start		|Status		|Time Spent	|Kind');
+	const pre_loop = Math.floor(new Date().valueOf());
 	try{
 		const promises_vector : Array<Promise<any>> = []
 		for(let i = 1; i < 11; i++){
 			if (Math.floor(i % 2))
-				promises_vector.push(fake_async_api(i))
-				//promises_vector.push(fake_async_api_wrapper(i))
+			promises_vector.push(fake_async_api(i))
+			//promises_vector.push(fake_async_api_wrapper(i))
 			else
-				promises_vector.push(fake_api(i))
-				//promises_vector.push(fake_api_wrapper(i))
+			promises_vector.push(fake_api(i))
+			//promises_vector.push(fake_api_wrapper(i))
 		}
 		const result = await Promise.allSettled(promises_vector) as Array<{status:'fulfilled',value:any} | {status:'rejected',reason:string}>;
 		result.forEach((e)=>{
 			if (e.status === 'fulfilled')
-				console.log(e.value)
+			console.log(e.value)
 			else
-				console.log(e.reason)
+			console.log(e.reason)
 		});
+		console.log(`Total Time spent ${Math.floor(Math.floor(new Date().valueOf()) - pre_loop)}ms`)
 	}catch(e)
 	{
 		console.log(e);
@@ -86,6 +90,11 @@ async function non_blocking_call_api(){
 	return (true);
 }
 
-blocking_call_api().then(e=>console.log(`Resultado ${e}`)).catch(e=>console.log('deu ruim'))
-
+//blocking_call_api().then(e=>console.log(`Resultado ${e}`)).catch(e=>console.log('deu ruim'))
 //non_blocking_call_api().then(e=>console.log(`Resultado ${e}`)).catch(e=>console.log('deu ruim'))
+async function call_both(){
+	await blocking_call_api();
+	await non_blocking_call_api();
+}
+
+call_both();
