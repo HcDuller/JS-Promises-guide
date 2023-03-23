@@ -24,24 +24,6 @@ async function fake_async_api(call_number:number) : Promise<any>{
 	}, time))
 }
 
-//Wrappers that enforce the fake API to always resolve (needed when using Promise.all())
-async function fake_api_wrapper(call_number:number){
-	try{
-		const result = await fake_api(call_number);
-		return(result)
-	}catch(e){
-		return(e);
-	}
-}
-async function fake_async_api_wrapper(call_number:number){
-	try{
-		const result = await fake_async_api(call_number);
-		return(result)
-	}catch(e){
-		return(e);
-	}
-}
-
 async function blocking_call_api(){
 	console.log('started to call blocking fake api')
 	console.log('Call	|Start		|Status		|Time Spent	|Kind');
