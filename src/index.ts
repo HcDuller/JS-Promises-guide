@@ -1,6 +1,9 @@
 // Functions that returns a Promise:
 //   Function that simulates an API call, Promise written
 const start = new Date().valueOf();
+const red = "\x1b[31m"
+const reset = "\x1b[0m"
+const green = "\x1b[32m"
 
 function fake_api(call_number:number) : Promise<string>{
 	const call_time = Math.floor((new Date().valueOf()-start))
@@ -8,8 +11,8 @@ function fake_api(call_number:number) : Promise<string>{
 		const time = Math.floor(Math.random()*5000);
 		setTimeout(() => {
 			if (time > 2500)
-				reject(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[Rejected]	|[${time}]		|Promise`);
-			resolve(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[Resolved]	|[${time}]		|Promise`);
+				reject(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[${red}Rejected${reset}]	|[${time}]		|Promise`);
+			resolve(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[${green}Resolved${reset}]	|[${time}]		|Promise`);
 		}, time);
 	})
 }
@@ -19,8 +22,8 @@ async function fake_async_api(call_number:number) : Promise<any>{
 	const call_time = Math.floor((new Date().valueOf()-start))
 	return await new Promise((resolve,reject)=>setTimeout(() => {
 		if (time > 2500)
-			reject(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[Rejected]	|[${time}]		|Async`);
-		resolve(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[Resolved]	|[${time}]		|Async`);
+			reject(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[${red}Rejected${reset}]	|[${time}]		|Async`);
+		resolve(`[${call_number}]	|[${call_time}]${(()=>call_time > 10000 ? '\t' : '\t\t')()}|[${green}Resolved${reset}]	|[${time}]		|Async`);
 	}, time))
 }
 
